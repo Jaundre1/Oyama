@@ -4,14 +4,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#FFFFFF"> <!-- White background -->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/box_background"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <!-- Question Text -->
     <TextView
-        android:id="@+id/qrCodeResultTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:text="Have you washed the bus?"
+        android:textSize="20sp"
         android:textColor="@android:color/black"
-        android:text="QR Code Result" />
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="center_horizontal" />
 
+    <!-- Instruction Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Was the bus washed?"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:textStyle="italic"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_horizontal" />
+
+    <!-- Buttons for Yes and No -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/yesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#B9322C"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/noButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:backgroundTint="#B9322C"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+
+ </LinearLayout>
 </LinearLayout>

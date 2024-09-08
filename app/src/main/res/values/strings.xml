@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Oyama</string>
     <string name="todo" />
+    <string name="logo_desc">Company Logo</string>
+    <string name="oyama_logo_desc">Oyama Company Logo</string>
+
 </resources>
