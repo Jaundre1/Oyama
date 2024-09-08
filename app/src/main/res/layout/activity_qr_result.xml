@@ -1,65 +1,308 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
-    android:background="#FFFFFF"> <!-- White background -->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"> <!-- White background for the entire screen -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/box_background"
         android:orientation="vertical"
         android:padding="16dp">
 
-    <!-- Question Text -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Have you washed the bus?"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center_horizontal" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="16dp"
+            app:srcCompat="@drawable/oyama_logo" />
 
-    <!-- Instruction Text -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Was the bus washed?"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:textStyle="italic"
-        android:layout_marginBottom="16dp"
-        android:layout_gravity="center_horizontal" />
-
-    <!-- Buttons for Yes and No -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/yesButton"
-            android:layout_width="wrap_content"
+        <!-- Box Container 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Yes"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="#B9322C"
-            android:textColor="#FFFFFF" />
+            android:background="@drawable/box_background"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
 
-        <Button
-            android:id="@+id/noButton"
-            android:layout_width="wrap_content"
+            <!-- Question Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"
+                android:text="Have you washed the bus?"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <!-- Instruction Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="16dp"
+                android:text="Was the bus washed?"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <!-- Buttons for Yes and No -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/yesButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Yes"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/yes_button_background" />
+
+                <Button
+                    android:id="@+id/noButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/no_button_background" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Box Container 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No"
-            android:backgroundTint="#B9322C"
-            android:textColor="#FFFFFF" />
+            android:background="@drawable/box_background"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <!-- Question Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"
+                android:text="Have you washed the bus?"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <!-- Instruction Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="16dp"
+                android:text="Was the bus washed?"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <!-- Buttons for Yes and No -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/yesButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Yes"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/yes_button_background" />
+
+                <Button
+                    android:id="@+id/noButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/no_button_background" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Box Container 3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/box_background"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <!-- Question Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"
+                android:text="Have you washed the bus?"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <!-- Instruction Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="16dp"
+                android:text="Was the bus washed?"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <!-- Buttons for Yes and No -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/yesButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Yes"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/yes_button_background" />
+
+                <Button
+                    android:id="@+id/noButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/no_button_background" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Box Container 4 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/box_background"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <!-- Question Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"
+                android:text="Have you washed the bus?"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <!-- Instruction Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="16dp"
+                android:text="Was the bus washed?"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <!-- Buttons for Yes and No -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/yesButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Yes"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/yes_button_background" />
+
+                <Button
+                    android:id="@+id/noButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/no_button_background" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Box Container 5 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/box_background"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <!-- Question Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"
+                android:text="Have you washed the bus?"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <!-- Instruction Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="16dp"
+                android:text="Was the bus washed?"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <!-- Buttons for Yes and No -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/yesButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Yes"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/yes_button_background" />
+
+                <Button
+                    android:id="@+id/noButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/no_button_background" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
-
- </LinearLayout>
-</LinearLayout>
+</ScrollView>
