@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Logo at the top -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_marginTop="0dp"
+        android:layout_weight="0"
+        android:contentDescription="@string/todo"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/oyama_logo" />
+
+    <!-- Container for "Depot Selected" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="1dp"
+        android:gravity="start"
+        android:paddingStart="59dp">
+
+        <!-- Text that says "Depot Selected" -->
+        <TextView
+            android:id="@+id/depotSelectedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Depot Selected"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"
+            android:gravity="start" />
+    </LinearLayout>
+
+    <!-- Container for the box -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="0dp"
+        android:gravity="center_horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- Depot name in a box -->
+        <TextView
+            android:id="@+id/selectedDepotTextView"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/textview_border"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <!-- Two buttons at the bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="50dp">
+
+        <Button
+            android:id="@+id/ScanQRCode"
+            android:layout_width="279dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#B9322C"
+            android:padding="30dp"
+            android:text="Scan QR Code"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/ManualEntry"
+            android:layout_width="279dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#B9322C"
+            android:padding="30dp"
+            android:text="Manual Entry"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+
+</LinearLayout>
