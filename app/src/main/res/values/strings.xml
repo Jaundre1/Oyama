@@ -3,6 +3,8 @@
     <string name="app_name">Oyama</string>
     <string name="todo">To be done</string>
     <string name="oyama_logo_desc">Oyama Company Logo</string>
+    <string name="back_arrow">Back</string>
+
 
     <!-- Array for vehicle types -->
     <string-array name="vehicle_types">

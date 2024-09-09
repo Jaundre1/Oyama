@@ -12,4 +12,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true" />
 
+    <ImageView
+        android:id="@+id/scanBox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/scan_box_border"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter" />
+
 </RelativeLayout>

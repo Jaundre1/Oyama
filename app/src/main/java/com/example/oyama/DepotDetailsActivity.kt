@@ -3,6 +3,7 @@ package com.example.oyama
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,6 +23,7 @@ class DepotDetailsActivity : AppCompatActivity() {
         val selectedDepotTextView: TextView = findViewById(R.id.selectedDepotTextView)
         val scanQRCodeButton: Button = findViewById(R.id.ScanQRCode)
         val manualEntryButton: Button = findViewById(R.id.ManualEntry)
+        val backArrow: ImageView = findViewById(R.id.backArrow)
 
         // Get the selected depot from the intent
         val selectedDepot = intent.getStringExtra("SELECTED_DEPOT")
@@ -37,6 +39,11 @@ class DepotDetailsActivity : AppCompatActivity() {
         manualEntryButton.setOnClickListener {
             val intent = Intent(this, ManualEntryActivity::class.java)
             startActivity(intent)
+        }
+
+        // Set click listener for back arrow button
+        backArrow.setOnClickListener {
+            onBackPressed()
         }
     }
 }

@@ -28,6 +28,7 @@
         <!-- New Manual Entry Activity -->
         <activity android:name=".ManualEntryActivity" />
 
+
     </application>
 
     <!-- Permissions -->

@@ -71,9 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/edit_text"
-            android:popupBackground="@color/white"
-            android:spinnerStyle="@style/CustomSpinnerStyle" />
-
+            android:popupBackground="@color/white" />
 
         <!-- Submit Button -->
         <Button
@@ -85,7 +83,6 @@
             android:text="Submit"
             android:textColor="#FFFFFF"
             android:padding="16dp" />
-
     </LinearLayout>
 
 </ScrollView>
