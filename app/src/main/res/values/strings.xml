@@ -4,11 +4,12 @@
     <string name="todo">To be done</string>
     <string name="oyama_logo_desc">Oyama Company Logo</string>
 
+    <!-- Array for vehicle types -->
     <string-array name="vehicle_types">
-        <item>Coaster</item>
-        <item>Double Decker</item>
-        <item>Single Decker</item>
-        <item>Sprinter</item>
-        <item>Quantum</item>
+        <item>Bus</item>
+        <item>Van</item>
+        <item>Truck</item>
+        <item>Motorcycle</item>
+        <!-- Add other vehicle types as needed -->
     </string-array>
 </resources>

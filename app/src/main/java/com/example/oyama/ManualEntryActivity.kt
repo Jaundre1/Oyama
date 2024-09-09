@@ -2,9 +2,9 @@ package com.example.oyama
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 class ManualEntryActivity : AppCompatActivity() {
 
@@ -12,12 +12,14 @@ class ManualEntryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual_entry)
 
-        // Fleet number and registration number inputs
-        val fleetNumberEditText: EditText = findViewById(R.id.fleetNumberEditText)
-        val registrationNumberEditText: EditText = findViewById(R.id.registrationNumberEditText)
-
         // Vehicle Type Spinner
         val spinnerVehicleType: Spinner = findViewById(R.id.spinnerVehicleType)
+
+        // Hide the action bar
+        supportActionBar?.hide()
+
+        // Set the status bar color
+        window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
         // Array of vehicle types
         val vehicleTypes = resources.getStringArray(R.array.vehicle_types)

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base theme for the app -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -10,7 +11,11 @@
     <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
         <item name="android:background">@android:drawable/edit_text</item>
         <item name="android:popupBackground">#FFFFFF</item>
-        <item name="android:textColor">#000000</item>
+        <item name="android:spinnerItemStyle">@style/CustomSpinnerItemStyle</item>
     </style>
 
+    <!-- Custom style for spinner items -->
+    <style name="CustomSpinnerItemStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#000000</item>
+    </style>
 </resources>

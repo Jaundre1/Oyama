@@ -62,4 +62,8 @@ dependencies {
 
     // ViewBinding
     implementation("androidx.databinding:viewbinding:7.0.4")
+
+    // Ensure you have the following dependencies if not already included
+    // For Spinner dropdown functionality
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4") // For better layout handling if needed
 }
