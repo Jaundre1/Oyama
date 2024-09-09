@@ -1,8 +1,9 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="200dp"
-    android:height="200dp"
-    android:viewportWidth="230"
-    android:viewportHeight="230">
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="30dp"
+    android:height="30dp"
+    android:viewportWidth="230.0"
+    android:viewportHeight="230.0">
 
     <!-- Top border with gap in the middle -->
     <path
@@ -10,7 +11,7 @@
         android:fillType="evenOdd"
         android:pathData="M200,5C197.1,5 198,5 225,5L225,30.79L225,6"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="8" />
+        android:strokeWidth="2"/>
 
     <!-- Left border with gap in the middle -->
     <path
@@ -18,7 +19,7 @@
         android:fillType="evenOdd"
         android:pathData="M5,15C5,51.8 5,5 5,5L10.19,5L30,5"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="8" />
+        android:strokeWidth="2"/>
 
     <!-- Bottom border with gap in the middle -->
     <path
@@ -26,7 +27,7 @@
         android:fillType="evenOdd"
         android:pathData="M200,225C200,225 200,225 225,225L225,200.21L225,200"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="8" />
+        android:strokeWidth="2"/>
 
     <!-- Right border with gap in the middle -->
     <path
@@ -34,6 +35,6 @@
         android:fillType="evenOdd"
         android:pathData="M5,200C5,200 5,210 5,225L30.90,225L7,225"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="8" />
+        android:strokeWidth="2"/>
 
 </vector>
