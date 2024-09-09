@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Oyama">
+
+        <!-- Existing Activities -->
         <activity android:name=".DepotDetailsActivity" />
         <activity android:name=".SecondaryActivity" />
         <activity android:name=".QrScannerActivity" />
         <activity android:name=".QrResultActivity" />
+
+        <!-- Main Activity -->
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -20,10 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Add the new ManualEntryActivity here -->
+
+        <!-- New Manual Entry Activity -->
         <activity android:name=".ManualEntryActivity" />
+
     </application>
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

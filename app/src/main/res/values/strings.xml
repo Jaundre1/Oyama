@@ -1,7 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Oyama</string>
-    <string name="todo" />
-    <string name="logo_desc">Company Logo</string>
+    <string name="todo">To be done</string>
     <string name="oyama_logo_desc">Oyama Company Logo</string>
 
+    <string-array name="vehicle_types">
+        <item>Coaster</item>
+        <item>Double Decker</item>
+        <item>Single Decker</item>
+        <item>Sprinter</item>
+        <item>Quantum</item>
+    </string-array>
 </resources>

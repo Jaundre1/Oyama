@@ -1,98 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
     android:background="#FFFFFF">
 
-    <!-- Logo at the top -->
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="24dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/oyama_logo" />
-
-    <!-- Container for input fields and labels -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="100dp"> <!-- Ensure there is space at the bottom -->
 
-        <!-- Fleet Number -->
+        <!-- Logo at the top -->
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="match_parent"
+            android:layout_height="297dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/oyama_logo_desc"
+            android:src="@drawable/oyama_logo" />
+
+        <!-- Fleet number input -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Fleet Number"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="#000000"
             android:layout_marginBottom="8dp" />
 
         <EditText
-            android:id="@+id/fleetNumberInput"
+            android:id="@+id/fleetNumberEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Fleet Number"
-            android:padding="16dp"
-            android:background="@drawable/edittext_border"
-            android:textColor="@android:color/black"
-            android:textColorHint="#B0B0B0"
-            android:layout_marginBottom="16dp"/>
+            android:background="@android:drawable/edit_text"
+            android:hint="Enter fleet number"
+            android:textColor="#000000"
+            android:textColorHint="#AAAAAA"
+            android:padding="16dp" />
 
-        <!-- Reg No -->
+        <!-- Registration number input -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reg No"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:text="Registration Number"
+            android:textColor="#000000"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
 
         <EditText
-            android:id="@+id/regNoInput"
+            android:id="@+id/registrationNumberEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Reg No"
-            android:padding="16dp"
-            android:background="@drawable/edittext_border"
-            android:textColor="@android:color/black"
-            android:textColorHint="#B0B0B0"
-            android:layout_marginBottom="16dp"/>
+            android:background="@android:drawable/edit_text"
+            android:hint="Enter registration number"
+            android:textColor="#000000"
+            android:textColorHint="#AAAAAA"
+            android:padding="16dp" />
 
-        <!-- Vehicle Type -->
+        <!-- Vehicle Type Spinner -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Vehicle Type"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
+            android:textColor="#000000"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
 
-        <AutoCompleteTextView
-            android:id="@+id/vehicleTypeAutoComplete"
+        <Spinner
+            android:id="@+id/spinnerVehicleType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@drawable/edittext_border"
-            android:hint="Select Vehicle Type"
-            android:dropDownVerticalOffset="4dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#B0B0B0"
-            android:layout_marginBottom="24dp"/>
+            android:background="@android:drawable/edit_text"
+            android:popupBackground="@color/white"
+            android:textColor="#000000"
+            android:spinnerStyle="@style/CustomSpinnerStyle" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#B9322C"
+            android:text="Submit"
+            android:textColor="#FFFFFF"
+            android:padding="16dp" />
 
     </LinearLayout>
 
-    <!-- Submit Button -->
-    <Button
-        android:id="@+id/newPageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:backgroundTint="#B9322C"
-        android:textColor="#FFFFFF"
-        android:padding="16dp"
-        android:layout_gravity="center" />
-
-</LinearLayout>
+</ScrollView>
