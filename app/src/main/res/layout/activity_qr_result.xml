@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Have you washed the bus?"
+                android:text="Fog"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -40,8 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="Was the bus washed?"
-                android:textColor="@android:color/black"
+                android:text="(Was the vehicle treated with ULV Fogger)"
+                android:textColor="#B9322C"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -70,6 +70,7 @@
                     android:backgroundTint="#B9322C"
                     android:padding="12dp"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- Box 2 -->
@@ -87,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Have you washed the bus?"
+                android:text="Flush"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -95,8 +96,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="Was the bus washed?"
-                android:textColor="@android:color/black"
+                android:text="(Was the vehicle flush treated)"
+                android:textColor="#B9322C"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -125,6 +126,7 @@
                     android:backgroundTint="#B9322C"
                     android:padding="12dp"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- Box 3 -->
@@ -142,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Have you washed the bus?"
+                android:text="Gel"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -150,8 +152,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="Was the bus washed?"
-                android:textColor="@android:color/black"
+                android:text="Was the vehicle gel treated"
+                android:textColor="#B9322C"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -180,6 +182,7 @@
                     android:backgroundTint="#B9322C"
                     android:padding="12dp"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- Box 4 -->
@@ -197,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Have you washed the bus?"
+                android:text="Delflow SC"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -205,8 +208,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="Was the bus washed?"
-                android:textColor="@android:color/black"
+                android:text="(Did the vehicle get treated with Delflow)"
+                android:textColor="#B9322C"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -235,6 +238,7 @@
                     android:backgroundTint="#B9322C"
                     android:padding="12dp"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- Box 5 -->
@@ -252,7 +256,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Have you washed the bus?"
+                android:text="Ambush 10 SC"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
@@ -260,8 +264,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="Was the bus washed?"
-                android:textColor="@android:color/black"
+                android:text="(Did the vehicle get treated with Ambush)"
+                android:textColor="#B9322C"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -290,18 +294,20 @@
                     android:backgroundTint="#B9322C"
                     android:padding="12dp"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <!-- Submit Button -->
         <Button
             android:id="@+id/submitButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:textColor="#FFFFFF"
+            android:layout_width="378dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
             android:backgroundTint="#B9322C"
             android:padding="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_gravity="bottom"/>
+            android:text="Submit"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
+
 </ScrollView>

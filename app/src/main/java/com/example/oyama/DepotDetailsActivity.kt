@@ -35,8 +35,8 @@ class DepotDetailsActivity : AppCompatActivity() {
 
         // Set click listener for Manual Entry button
         manualEntryButton.setOnClickListener {
-            // Handle manual entry button click here
-            // Example: show a Toast or start another activity
+            val intent = Intent(this, ManualEntryActivity::class.java)
+            startActivity(intent)
         }
     }
 }

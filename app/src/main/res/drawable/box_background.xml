@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Shadow Layer -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#00000000"/> <!-- Transparent background for shadow -->
-            <corners android:radius="4dp"/>
-            <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp"/>
-            <size android:width="match_parent" android:height="match_parent"/>
-            <elevation android:shadowColor="#80000000" android:shadowRadius="4dp"/>
-        </shape>
-    </item>
-    <!-- Actual Box Background -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF"/> <!-- Background color of the box -->
-            <corners android:radius="4dp"/>
-        </shape>
-    </item>
-</layer-list>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF"/> <!-- Background Color -->
+    <corners android:radius="8dp"/> <!-- Corner Radius -->
+    <stroke
+        android:width="1dp"
+        android:color="#CCCCCC"/> <!-- Border Color -->
+    <padding
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp"
+        android:bottom="4dp"/> <!-- Padding inside the drawable -->
+</shape>

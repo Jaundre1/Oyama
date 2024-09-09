@@ -20,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Add the new ManualEntryActivity here -->
+        <activity android:name=".ManualEntryActivity" />
     </application>
 
     <uses-permission android:name="android.permission.CAMERA" />
