@@ -6,12 +6,90 @@
     android:padding="16dp"
     android:background="#FFFFFF">
 
-    <!-- Button in the center of the screen -->
+    <!-- Logo at the top -->
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="24dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/oyama_logo" />
+
+    <!-- Container for input fields and labels -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Fleet Number -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fleet Number"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/fleetNumberInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Fleet Number"
+            android:padding="16dp"
+            android:background="@drawable/edittext_border"
+            android:textColor="@android:color/black"
+            android:textColorHint="#B0B0B0"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Reg No -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reg No"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/regNoInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Reg No"
+            android:padding="16dp"
+            android:background="@drawable/edittext_border"
+            android:textColor="@android:color/black"
+            android:textColorHint="#B0B0B0"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Vehicle Type -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vehicle Type"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/vehicleTypeAutoComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@drawable/edittext_border"
+            android:hint="Select Vehicle Type"
+            android:dropDownVerticalOffset="4dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="#B0B0B0"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+
+    <!-- Submit Button -->
     <Button
         android:id="@+id/newPageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click Me"
+        android:text="Submit"
         android:backgroundTint="#B9322C"
         android:textColor="#FFFFFF"
         android:padding="16dp"
