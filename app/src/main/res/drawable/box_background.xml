@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Shadow -->
+    <!-- Shadow Layer -->
     <item>
-        <shape
-            android:shape="rectangle">
-            <solid android:color="#00000000" />
-            <corners android:radius="8dp" />
-            <padding android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp" />
-            <size android:width="0dp" android:height="0dp" /> <!-- Use zero size to avoid issue -->
-            <gradient
-                android:startColor="#80000000"
-                android:endColor="#00000000"
-                android:angle="90" />
+        <shape android:shape="rectangle">
+            <solid android:color="#00000000"/> <!-- Transparent background for shadow -->
+            <corners android:radius="4dp"/>
+            <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp"/>
+            <size android:width="match_parent" android:height="match_parent"/>
+            <elevation android:shadowColor="#80000000" android:shadowRadius="4dp"/>
         </shape>
     </item>
-    <!-- Box Background -->
-    <item android:top="2dp" android:left="2dp" android:right="2dp" android:bottom="2dp">
+    <!-- Actual Box Background -->
+    <item>
         <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF" />
-            <corners android:radius="8dp" />
-            <stroke
-                android:width="1dp"
-                android:color="#B0B0B0" />
+            <solid android:color="#FFFFFF"/> <!-- Background color of the box -->
+            <corners android:radius="4dp"/>
         </shape>
     </item>
 </layer-list>
