@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import android.content.Intent
 
 class QrResultActivity : AppCompatActivity() {
 
@@ -45,18 +45,16 @@ class QrResultActivity : AppCompatActivity() {
             resetButtonColors(yesButton, noButton)
         }
 
-        // Set click listeners
+        // Set click listeners for yes/no buttons
         buttons.forEach { (yesButton, noButton) ->
             yesButton.setOnClickListener { setButtonColors(yesButton, noButton) }
             noButton.setOnClickListener { setButtonColors(noButton, yesButton) }
         }
 
-        // Set submit button click listener
-        val submitButton = findViewById<Button>(R.id.submitButton)
+        // Set click listener for the Submit button
+        val submitButton: Button = findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
-            // Navigate to SuccessActivity
-            val intent = Intent(this, SuccessActivity::class.java)
-            startActivity(intent)
+            showSuccessDialog()
         }
     }
 
@@ -70,5 +68,24 @@ class QrResultActivity : AppCompatActivity() {
     private fun setButtonColors(selectedButton: Button, unselectedButton: Button) {
         selectedButton.setBackgroundColor(Color.parseColor("#B9322C"))
         unselectedButton.setBackgroundColor(Color.GRAY)
+    }
+
+    // Shows the success dialog
+    private fun showSuccessDialog() {
+        // Inflate the dialog layout
+        val dialogView = layoutInflater.inflate(R.layout.dialog_success, null)
+
+        // Create and show the dialog
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        // Get reference to the button and set its listener
+        val doneButton: Button = dialogView.findViewById(R.id.doneButton)
+        doneButton.setOnClickListener {
+            dialog.dismiss() // Close the dialog
+        }
+
+        dialog.show()
     }
 }
