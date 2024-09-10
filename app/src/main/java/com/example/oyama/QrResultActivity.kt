@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import android.content.Intent
 
 class QrResultActivity : AppCompatActivity() {
 
@@ -48,6 +49,14 @@ class QrResultActivity : AppCompatActivity() {
         buttons.forEach { (yesButton, noButton) ->
             yesButton.setOnClickListener { setButtonColors(yesButton, noButton) }
             noButton.setOnClickListener { setButtonColors(noButton, yesButton) }
+        }
+
+        // Set submit button click listener
+        val submitButton = findViewById<Button>(R.id.submitButton)
+        submitButton.setOnClickListener {
+            // Navigate to SuccessActivity
+            val intent = Intent(this, SuccessActivity::class.java)
+            startActivity(intent)
         }
     }
 

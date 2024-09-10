@@ -28,6 +28,8 @@
         <!-- New Manual Entry Activity -->
         <activity android:name=".ManualEntryActivity" />
 
+        <!-- New Success Activity -->
+        <activity android:name=".SuccessActivity" />
 
     </application>
 
