@@ -12,11 +12,11 @@
         android:id="@+id/backArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_back"
-        android:contentDescription="@string/back_arrow"
         android:layout_gravity="start"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/back_arrow"
+        android:src="@drawable/ic_arrow_back" />
 
     <!-- Logo at the top -->
     <ImageView
@@ -24,10 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:layout_marginTop="0dp"
-        android:layout_weight="0"
-        android:contentDescription="@string/todo"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/oyama_logo" />
+        app:srcCompat="@drawable/oyama_logo"
+        android:contentDescription="@string/logo_description" />
 
     <!-- Container for "Depot Selected" -->
     <LinearLayout

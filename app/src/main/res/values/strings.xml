@@ -5,6 +5,7 @@
     <string name="oyama_logo_desc">Oyama Company Logo</string>
     <string name="back_arrow">Back</string>
     <string name="check_mark_desc">Check Mark</string>
+    <string name="logo_description">Logo Description</string>
 
 
     <!-- Array for vehicle types -->

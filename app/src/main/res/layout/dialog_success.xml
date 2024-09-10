@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@android:color/white">
+    android:padding="70dp"
+    android:background="@drawable/rounded_corners_background">
 
-    <!-- Check Mark Icon -->
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_check_mark"
-        android:layout_gravity="center"
-        android:contentDescription="@string/check_mark_desc" />
+        android:id="@+id/checkMarkIcon"
+        android:layout_width="81dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="40dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_check_mark" />
 
-    <!-- Success Message -->
     <TextView
+        android:id="@+id/successMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/checkMarkIcon"
+        android:layout_centerHorizontal="true"
         android:text="Successfully Submitted"
         android:textSize="18sp"
-        android:textColor="#333333"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center" />
+        android:textColor="@android:color/black" />
 
-    <!-- Done Button -->
     <Button
         android:id="@+id/doneButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="199dp"
+        android:layout_height="78dp"
+        android:layout_below="@id/successMessage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="#B9322C"
         android:text="Done"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center" />
-</LinearLayout>
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

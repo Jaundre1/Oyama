@@ -1,14 +1,19 @@
 package com.example.oyama
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 
 class QrResultActivity : AppCompatActivity() {
+
+    // To track the selected states for each question
+    private val buttonStates = mutableMapOf<Int, Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +36,7 @@ class QrResultActivity : AppCompatActivity() {
             textView.text = "No QR code data available"
         }
 
-        // Initialize buttons
+        // Initialize buttons and their corresponding "yes/no" pair
         val buttons = listOf(
             Pair(findViewById<Button>(R.id.yesButton1), findViewById<Button>(R.id.noButton1)),
             Pair(findViewById<Button>(R.id.yesButton2), findViewById<Button>(R.id.noButton2)),
@@ -40,21 +45,32 @@ class QrResultActivity : AppCompatActivity() {
             Pair(findViewById<Button>(R.id.yesButton5), findViewById<Button>(R.id.noButton5))
         )
 
-        // Set initial button colors
-        buttons.forEach { (yesButton, noButton) ->
+        // Set initial button colors and initialize state map
+        buttons.forEachIndexed { index, (yesButton, noButton) ->
             resetButtonColors(yesButton, noButton)
+            buttonStates[index] = false // Mark as unselected initially
         }
 
         // Set click listeners for yes/no buttons
-        buttons.forEach { (yesButton, noButton) ->
-            yesButton.setOnClickListener { setButtonColors(yesButton, noButton) }
-            noButton.setOnClickListener { setButtonColors(noButton, yesButton) }
+        buttons.forEachIndexed { index, (yesButton, noButton) ->
+            yesButton.setOnClickListener {
+                setButtonColors(yesButton, noButton)
+                buttonStates[index] = true // Mark "yes" selected
+            }
+            noButton.setOnClickListener {
+                setButtonColors(noButton, yesButton)
+                buttonStates[index] = true // Mark "no" selected
+            }
         }
 
         // Set click listener for the Submit button
         val submitButton: Button = findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
-            showSuccessDialog()
+            if (validateSelections()) {
+                showSuccessDialog()
+            } else {
+                Toast.makeText(this, "Please answer all the questions!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -70,6 +86,12 @@ class QrResultActivity : AppCompatActivity() {
         unselectedButton.setBackgroundColor(Color.GRAY)
     }
 
+    // Validate if all selections are made (Yes or No for each question)
+    private fun validateSelections(): Boolean {
+        // Check if all buttons are selected (true means selected)
+        return buttonStates.all { it.value }
+    }
+
     // Shows the success dialog
     private fun showSuccessDialog() {
         // Inflate the dialog layout
@@ -80,10 +102,18 @@ class QrResultActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
 
-        // Get reference to the button and set its listener
+        // Get reference to the Done button and set its listener
         val doneButton: Button = dialogView.findViewById(R.id.doneButton)
         doneButton.setOnClickListener {
             dialog.dismiss() // Close the dialog
+
+            // Go back to the DepotDetailsActivity with the selected depot
+            val selectedDepot = intent.getStringExtra("SELECTED_DEPOT")
+            val returnIntent = Intent(this, DepotDetailsActivity::class.java).apply {
+                putExtra("SELECTED_DEPOT", selectedDepot)
+            }
+            startActivity(returnIntent)
+            finish() // Close the current activity
         }
 
         dialog.show()
