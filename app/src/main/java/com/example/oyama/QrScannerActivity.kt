@@ -82,9 +82,11 @@ class QrScannerActivity : ComponentActivity() {
                 .addOnSuccessListener { barcodes ->
                     for (barcode in barcodes) {
                         if (barcode.valueType == Barcode.TYPE_TEXT) {
+                            // Pass the QR code data to the next activity
+                            val rawValue = barcode.displayValue ?: "No data found"
                             val intent = Intent(this@QrScannerActivity, QrResultActivity::class.java)
-                            intent.putExtra("QR_RESULT", barcode.displayValue)
-                            // Use flags to clear the back stack
+                            intent.putExtra("QR_DATA", rawValue)
+                            // Clear back stack
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                             finish()

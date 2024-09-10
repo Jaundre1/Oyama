@@ -3,6 +3,7 @@ package com.example.oyama
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
@@ -15,6 +16,19 @@ class QrResultActivity : AppCompatActivity() {
         // Hide the ActionBar and set the status bar color
         supportActionBar?.hide()
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
+
+        // Retrieve QR data from the Intent
+        val qrData = intent.getStringExtra("QR_DATA")
+
+        // Display the first part of the QR data
+        val textView = findViewById<TextView>(R.id.qrDataTextView)
+        qrData?.let {
+            val dataParts = it.split(";")
+            val firstPart = dataParts.getOrNull(0) ?: "No data available"
+            textView.text = firstPart
+        } ?: run {
+            textView.text = "No QR code data available"
+        }
 
         // Initialize buttons
         val buttons = listOf(

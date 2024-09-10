@@ -17,6 +17,18 @@
             android:layout_marginBottom="32dp"
             android:src="@drawable/oyama_logo" />
 
+        <TextView
+            android:id="@+id/qrDataTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QR Code Data"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:padding="16dp"/>
+
+
+
+
         <!-- Box 1 -->
         <LinearLayout
             android:id="@+id/box1"
