@@ -7,13 +7,21 @@
     <string name="check_mark_desc">Check Mark</string>
     <string name="logo_description">Logo Description</string>
 
-
     <!-- Array for vehicle types -->
     <string-array name="vehicle_types">
-        <item>Bus</item>
-        <item>Van</item>
-        <item>Truck</item>
-        <item>Motorcycle</item>
+        <item>Coaster</item>
+        <item>Double Decker</item>
+        <item>Single Decker</item>
+        <item>Sprinter</item>
+        <item>Quantum</item>
         <!-- Add other vehicle types as needed -->
+    </string-array>
+
+    <!-- Array for reasons -->
+    <string-array name="reason_types">
+        <item>Reason 1</item>
+        <item>Reason 2</item>
+        <item>Reason 3</item>
+        <!-- Add other reasons as needed -->
     </string-array>
 </resources>
