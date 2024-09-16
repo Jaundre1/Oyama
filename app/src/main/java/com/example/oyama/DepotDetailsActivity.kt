@@ -12,8 +12,6 @@ import androidx.core.content.ContextCompat
 class DepotDetailsActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
-
-    // Initialize the data holder to temporarily store data
     private val dataHolder = StringBuilder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +27,11 @@ class DepotDetailsActivity : AppCompatActivity() {
         // Set the status bar color
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
+        // Find views
         val selectedDepotTextView: TextView = findViewById(R.id.selectedDepotTextView)
         val scanQRCodeButton: Button = findViewById(R.id.ScanQRCode)
         val manualEntryButton: Button = findViewById(R.id.ManualEntry)
-        val doneButton: Button = findViewById(R.id.doneButton) // Reference to the Done button from your XML
-
+        val doneButton: Button = findViewById(R.id.doneButton)
         val backArrow: ImageView = findViewById(R.id.backArrow)
 
         // Retrieve the selected depot from SharedPreferences
@@ -62,34 +60,23 @@ class DepotDetailsActivity : AppCompatActivity() {
 
         // Set click listener for Done button to process, clear data, and reset the app state
         doneButton.setOnClickListener {
-            sendDataToAWS()  // Send data to AWS or process it
-            clearDataHolder() // Clear the data holder after submission
-            resetApp() // Reset the app state after done
+            clearDataHolder()
+            resetApp()
         }
     }
 
-    // Function to process and send data to AWS (example implementation)
-    private fun sendDataToAWS() {
-        val dataToSend = dataHolder.toString()
-        // Code to send dataToSend to AWS or process it as CSV, etc.
-    }
-
-    // Function to clear the data holder after "Done"
     private fun clearDataHolder() {
-        dataHolder.clear()  // Clears the temporary data
+        dataHolder.clear()
     }
 
-    // Function to reset the app state (clear any other data and reset UI)
     private fun resetApp() {
-        // Clear any shared preferences or other persistent data if needed
-        sharedPreferences.edit().clear().apply()  // Clears SharedPreferences
-        // Optionally, reset UI components if needed or reload the activity
+        sharedPreferences.edit().clear().apply()
+        // Optionally restart the activity or redirect to a different activity
         val intent = Intent(this, DepotDetailsActivity::class.java)
         startActivity(intent)
-        finish()  // Finish the current activity so it starts fresh
+        finish() // Finish the current activity to prevent stacking
     }
 
-    // You can create a method to retrieve the data from the holder if needed
     fun getDataFromHolder(): String {
         return dataHolder.toString()
     }

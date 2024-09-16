@@ -26,12 +26,6 @@ class QrResultActivity : AppCompatActivity() {
         // Retrieve QR data from the Intent
         val qrData = intent.getStringExtra("QR_DATA")
 
-        // Hide the action bar
-        supportActionBar?.hide()
-
-        // Set the status bar color
-        window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
-
         // Display the first part of the QR data
         val textView = findViewById<TextView>(R.id.qrDataTextView)
         qrData?.let {

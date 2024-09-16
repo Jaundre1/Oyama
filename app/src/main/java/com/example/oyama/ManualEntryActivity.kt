@@ -10,8 +10,6 @@ class ManualEntryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual_entry)
-        // Initialize SharedPreferences
-        var sharedPreferences = getSharedPreferences("DepotPrefs", MODE_PRIVATE)
 
         // Hide the action bar
         supportActionBar?.hide()
@@ -22,8 +20,6 @@ class ManualEntryActivity : AppCompatActivity() {
             this,
             R.array.vehicle_types,
             R.layout.spinner_item // Custom layout for spinner item
-
-
         ).also { adapter ->
             adapter.setDropDownViewResource(R.layout.spinner_dropdown_item) // Custom layout for dropdown view
             spinnerVehicleType.adapter = adapter

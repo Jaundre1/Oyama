@@ -2,7 +2,6 @@ package com.example.oyama
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,8 +43,8 @@ class QrScannerActivity : ComponentActivity() {
         previewView = findViewById(R.id.previewView)
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        // Request camera permissions
-        requestCameraPermission()
+        // Request camera permission
+        requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
     }
 
     private fun startCamera() {
@@ -53,61 +52,52 @@ class QrScannerActivity : ComponentActivity() {
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
             val preview = androidx.camera.core.Preview.Builder().build()
+            val barcodeAnalyzer = BarcodeAnalyzer()
+
+            preview.setSurfaceProvider(previewView.surfaceProvider)
+
             val imageAnalysis = ImageAnalysis.Builder()
                 .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer())
+                .apply {
+                    setAnalyzer(cameraExecutor, barcodeAnalyzer)
                 }
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-            cameraProvider.bindToLifecycle(
-                this, cameraSelector, preview, imageAnalysis
-            )
-            preview.setSurfaceProvider(previewView.surfaceProvider)
+            cameraProvider.unbindAll()
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
         }, ContextCompat.getMainExecutor(this))
     }
 
     private inner class BarcodeAnalyzer : ImageAnalysis.Analyzer {
-        private val barcodeScanner = BarcodeScanning.getClient(
-            BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build()
-        )
+        private val scannerOptions = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(
+                Barcode.FORMAT_QR_CODE
+            )
+            .build()
+        private val scanner = BarcodeScanning.getClient(scannerOptions)
 
-        override fun analyze(imageProxy: ImageProxy) {
-            val mediaImage = imageProxy.image ?: return
-            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            barcodeScanner.process(image)
-                .addOnSuccessListener { barcodes ->
-                    for (barcode in barcodes) {
-                        if (barcode.valueType == Barcode.TYPE_TEXT) {
-                            // Pass the QR code data to the next activity
-                            val rawValue = barcode.displayValue ?: "No data found"
+        override fun analyze(image: ImageProxy) {
+            val mediaImage = image.image
+            if (mediaImage != null) {
+                val inputImage = InputImage.fromMediaImage(mediaImage, image.imageInfo.rotationDegrees)
+                scanner.process(inputImage)
+                    .addOnSuccessListener { barcodes ->
+                        for (barcode in barcodes) {
+                            val rawValue = barcode.rawValue
                             val intent = Intent(this@QrScannerActivity, QrResultActivity::class.java)
                             intent.putExtra("QR_DATA", rawValue)
-                            // Clear back stack
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
-                            finish()
+                            finish() // Close this activity once the result is processed
                         }
                     }
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this@QrScannerActivity, "Failed to scan QR code", Toast.LENGTH_SHORT).show()
-                }
-                .addOnCompleteListener {
-                    imageProxy.close()
-                }
-        }
-    }
-
-    private fun requestCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-            != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
-        } else {
-            startCamera()
+                    .addOnFailureListener {
+                        Toast.makeText(this@QrScannerActivity, "Error processing barcode", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnCompleteListener {
+                        image.close() // Important to close the image
+                    }
+            }
         }
     }
 

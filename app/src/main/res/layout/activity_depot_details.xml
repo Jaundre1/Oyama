@@ -101,4 +101,15 @@
             android:layout_marginTop="16dp" />
     </LinearLayout>
 
+    <!-- Done button, assuming it's required as per your Kotlin code -->
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#B9322C"
+        android:padding="16dp"
+        android:text="Done"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

@@ -10,12 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Oyama">
 
-        <!-- Existing Activities -->
-        <activity android:name=".DepotDetailsActivity" />
-        <activity android:name=".SecondaryActivity" />
-        <activity android:name=".QrScannerActivity" />
-        <activity android:name=".QrResultActivity" />
-
         <!-- Main Activity -->
         <activity android:name=".MainActivity"
             android:exported="true">
@@ -25,12 +19,12 @@
             </intent-filter>
         </activity>
 
-        <!-- New Manual Entry Activity -->
+        <!-- Existing Activities -->
+        <activity android:name=".DepotDetailsActivity" />
+        <activity android:name=".SecondaryActivity" />
+        <activity android:name=".QrScannerActivity" />
+        <activity android:name=".QrResultActivity" />
         <activity android:name=".ManualEntryActivity" />
-
-        <!-- New Success Activity -->
-
-
     </application>
 
     <!-- Permissions -->
