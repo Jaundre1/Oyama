@@ -24,4 +24,13 @@
         <item>Reason 3</item>
         <!-- Add other reasons as needed -->
     </string-array>
+    <string-array name="vehicle_brands">
+        <item>Man</item>
+        <item>Merceded-Benz</item>
+        <item>Neoplan Skyliner</item>
+        <item>Scania</item>
+        <item>Toyota</item>
+        <item>Volvo</item>
+        <item>Yutong</item>
+    </string-array>
 </resources>
