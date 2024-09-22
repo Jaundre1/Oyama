@@ -10,21 +10,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class QrResultActivity : AppCompatActivity() {
 
-    // To track the selected states for each question
     private val buttonStates = mutableMapOf<Int, Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_result)
 
-        // Hide the ActionBar and set the status bar color to white
         supportActionBar?.hide()
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
-        // Display the fleet number from the file
         val textView = findViewById<TextView>(R.id.qrDataTextView)
         val file = File(filesDir, "temporary_data.txt")
 
@@ -34,7 +35,7 @@ class QrResultActivity : AppCompatActivity() {
                 val firstLine = lines[0]
                 val parts = firstLine.split(";")
                 if (parts.isNotEmpty()) {
-                    textView.text = parts[0] // Display only the fleet number
+                    textView.text = parts[0]
                 } else {
                     textView.text = "No data available"
                 }
@@ -45,7 +46,6 @@ class QrResultActivity : AppCompatActivity() {
             textView.text = "No data available"
         }
 
-        // Initialize buttons (Yes/No pairs for questions)
         val buttons = listOf(
             Pair(findViewById<Button>(R.id.yesButton1), findViewById<Button>(R.id.noButton1)),
             Pair(findViewById<Button>(R.id.yesButton2), findViewById<Button>(R.id.noButton2)),
@@ -54,31 +54,27 @@ class QrResultActivity : AppCompatActivity() {
             Pair(findViewById<Button>(R.id.yesButton5), findViewById<Button>(R.id.noButton5))
         )
 
-        // Initialize button states and colors
         buttons.forEachIndexed { index, (yesButton, noButton) ->
             resetButtonColors(yesButton, noButton)
-            buttonStates[index] = false // Initially, all questions are unselected
+            buttonStates[index] = false
         }
 
-        // Set click listeners for yes/no buttons
         buttons.forEachIndexed { index, (yesButton, noButton) ->
             yesButton.setOnClickListener {
                 setButtonColors(yesButton, noButton)
-                buttonStates[index] = true // "Yes" is selected
+                buttonStates[index] = true
             }
             noButton.setOnClickListener {
                 setButtonColors(noButton, yesButton)
-                buttonStates[index] = true // "No" is selected
+                buttonStates[index] = true
             }
         }
 
-        // Set click listener for the Submit button
         val submitButton: Button = findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
             if (validateSelections()) {
-                // Clear temporary data
-                file.delete() // Deletes the file
-
+                writeResultsToFile(file) // Write results to the file
+                file.delete() // Deletes the temporary file
                 showSuccessDialog()
             } else {
                 Toast.makeText(this, "Please answer all the questions!", Toast.LENGTH_SHORT).show()
@@ -86,48 +82,55 @@ class QrResultActivity : AppCompatActivity() {
         }
     }
 
-    // Resets both buttons to gray (initial state)
     private fun resetButtonColors(yesButton: Button, noButton: Button) {
         yesButton.setBackgroundColor(Color.GRAY)
         noButton.setBackgroundColor(Color.GRAY)
     }
 
-    // Sets the selected button to red and the unselected one to gray
     private fun setButtonColors(selectedButton: Button, unselectedButton: Button) {
         selectedButton.setBackgroundColor(Color.parseColor("#B9322C"))
         unselectedButton.setBackgroundColor(Color.GRAY)
     }
 
-    // Validate if all questions have been answered (either Yes or No)
     private fun validateSelections(): Boolean {
         return buttonStates.values.all { it }
     }
 
-    // Shows a success dialog when all questions are answered
     private fun showSuccessDialog() {
-        // Inflate custom dialog layout
         val dialogView = layoutInflater.inflate(R.layout.dialog_success, null)
 
-        // Create and show the dialog
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
-            .setCancelable(false) // Make it non-cancelable
+            .setCancelable(false)
             .create()
 
-        // Handle the Done button in the dialog
         val doneButton: Button = dialogView.findViewById(R.id.doneButton)
         doneButton.setOnClickListener {
-            dialog.dismiss() // Dismiss the dialog
+            dialog.dismiss()
 
-            // Retrieve selected depot data and navigate back to DepotDetailsActivity
             val selectedDepot = intent.getStringExtra("SELECTED_DEPOT")
             val returnIntent = Intent(this, DepotDetailsActivity::class.java).apply {
                 putExtra("SELECTED_DEPOT", selectedDepot)
             }
             startActivity(returnIntent)
-            finish() // Finish the current activity
+            finish()
         }
 
         dialog.show()
+    }
+
+    // Write results to a file
+    private fun writeResultsToFile(file: File) {
+        try {
+            FileWriter(file, true).use { writer ->
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                val currentDateTime = dateFormat.format(Date())
+                val results = buttonStates.map { if (it.value) "1" else "0" }.joinToString(",")
+                writer.write("Date: $currentDateTime, Answers: [$results]\n")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error writing to file", Toast.LENGTH_SHORT).show()
+        }
     }
 }

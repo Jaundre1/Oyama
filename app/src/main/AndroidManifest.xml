@@ -25,6 +25,8 @@
         <activity android:name=".QrScannerActivity" />
         <activity android:name=".QrResultActivity" />
         <activity android:name=".ManualEntryActivity" />
+        <activity android:name=".SendDataActivity" />
+
     </application>
 
     <!-- Permissions -->

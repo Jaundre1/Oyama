@@ -7,6 +7,10 @@ android {
     namespace = "com.example.oyama"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true // Enable BuildConfig fields
+    }
+
     defaultConfig {
         applicationId = "com.example.oyama"
         minSdk = 24
@@ -15,6 +19,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Add AWS_API_KEY to build config
+        buildConfigField("String", "AWS_API_KEY", "\"your_api_key_here\"") // Replace with your actual API key
     }
 
     buildTypes {
@@ -57,13 +64,19 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$camerax_version")
     implementation("androidx.camera:camera-view:1.0.0-alpha31")
 
-    // ML Kit Barcode Scanning dependency (older version)
+    // ML Kit Barcode Scanning dependency
     implementation("com.google.mlkit:barcode-scanning:16.1.1")
+
+    // Retrofit dependencies
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // OkHttp Logging Interceptor dependency
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     // ViewBinding
     implementation("androidx.databinding:viewbinding:7.0.4")
 
-    // Ensure you have the following dependencies if not already included
-    // For Spinner dropdown functionality
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4") // For better layout handling if needed
+    // Spinner dropdown functionality
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 }
