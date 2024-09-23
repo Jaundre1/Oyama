@@ -3,21 +3,24 @@ package com.example.oyama
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import org.json.JSONObject
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 
 class QrResultActivity : AppCompatActivity() {
 
-    private val buttonStates = mutableMapOf<Int, Boolean>()
+    private val buttonStates = mutableMapOf<Int, Boolean?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,25 +30,24 @@ class QrResultActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
         val textView = findViewById<TextView>(R.id.qrDataTextView)
-        val file = File(filesDir, "temporary_data.txt")
+        textView.text = "QR data goes here..." // This can be set with actual QR data
 
-        if (file.exists()) {
-            val lines = file.readLines()
-            if (lines.isNotEmpty()) {
-                val firstLine = lines[0]
-                val parts = firstLine.split(";")
-                if (parts.isNotEmpty()) {
-                    textView.text = parts[0]
-                } else {
-                    textView.text = "No data available"
-                }
+        // Setup buttons
+        setupButtons()
+
+        // Submit button
+        val submitButton: Button = findViewById(R.id.submitButton)
+        submitButton.setOnClickListener {
+            if (validateSelections()) {
+                sendDataToLambda()  // Send the results to the Lambda function
+                showSuccessDialog()
             } else {
-                textView.text = "No data available"
+                Toast.makeText(this, "Please answer all the questions!", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            textView.text = "No data available"
         }
+    }
 
+    private fun setupButtons() {
         val buttons = listOf(
             Pair(findViewById<Button>(R.id.yesButton1), findViewById<Button>(R.id.noButton1)),
             Pair(findViewById<Button>(R.id.yesButton2), findViewById<Button>(R.id.noButton2)),
@@ -56,30 +58,16 @@ class QrResultActivity : AppCompatActivity() {
 
         buttons.forEachIndexed { index, (yesButton, noButton) ->
             resetButtonColors(yesButton, noButton)
-            buttonStates[index] = false
+            buttonStates[index] = null // Use null to represent unanswered
+            yesButton.setOnClickListener { onButtonClicked(yesButton, noButton, index, true) }
+            noButton.setOnClickListener { onButtonClicked(noButton, yesButton, index, false) }
         }
+    }
 
-        buttons.forEachIndexed { index, (yesButton, noButton) ->
-            yesButton.setOnClickListener {
-                setButtonColors(yesButton, noButton)
-                buttonStates[index] = true
-            }
-            noButton.setOnClickListener {
-                setButtonColors(noButton, yesButton)
-                buttonStates[index] = true
-            }
-        }
-
-        val submitButton: Button = findViewById(R.id.submitButton)
-        submitButton.setOnClickListener {
-            if (validateSelections()) {
-                writeResultsToFile(file) // Write results to the file
-                file.delete() // Deletes the temporary file
-                showSuccessDialog()
-            } else {
-                Toast.makeText(this, "Please answer all the questions!", Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun onButtonClicked(selectedButton: Button, unselectedButton: Button, index: Int, isYes: Boolean) {
+        setButtonColors(selectedButton, unselectedButton)
+        buttonStates[index] = isYes // true for Yes, false for No
+        Log.d("ButtonClicked", "Button at index $index clicked. State updated to ${buttonStates[index]}.")
     }
 
     private fun resetButtonColors(yesButton: Button, noButton: Button) {
@@ -93,7 +81,43 @@ class QrResultActivity : AppCompatActivity() {
     }
 
     private fun validateSelections(): Boolean {
-        return buttonStates.values.all { it }
+        return buttonStates.values.all { it != null } // Ensure all questions have been answered
+    }
+
+    private fun sendDataToLambda() {
+        val results = buttonStates.values.map { if (it == true) "1" else "0" }
+        val jsonData = JSONObject().put("answers", results) // No need to include the date
+
+        val url = URL("https://7g703ccxk8.execute-api.eu-north-1.amazonaws.com/prod/data")
+        Thread {
+            try {
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "POST" // Use POST to send data
+                connection.doOutput = true
+                connection.setRequestProperty("Content-Type", "application/json")
+                connection.connectTimeout = 10000
+                connection.readTimeout = 10000
+
+                val outputStreamWriter = OutputStreamWriter(connection.outputStream)
+                outputStreamWriter.write(jsonData.toString())
+                outputStreamWriter.flush()
+                outputStreamWriter.close()
+
+                val responseCode = connection.responseCode
+                runOnUiThread {
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        Toast.makeText(this, "Data sent successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Failed to send data, Response Code: $responseCode", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }.start()
     }
 
     private fun showSuccessDialog() {
@@ -107,30 +131,18 @@ class QrResultActivity : AppCompatActivity() {
         val doneButton: Button = dialogView.findViewById(R.id.doneButton)
         doneButton.setOnClickListener {
             dialog.dismiss()
-
-            val selectedDepot = intent.getStringExtra("SELECTED_DEPOT")
-            val returnIntent = Intent(this, DepotDetailsActivity::class.java).apply {
-                putExtra("SELECTED_DEPOT", selectedDepot)
-            }
-            startActivity(returnIntent)
-            finish()
+            navigateToDepotDetails()
         }
 
         dialog.show()
     }
 
-    // Write results to a file
-    private fun writeResultsToFile(file: File) {
-        try {
-            FileWriter(file, true).use { writer ->
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                val currentDateTime = dateFormat.format(Date())
-                val results = buttonStates.map { if (it.value) "1" else "0" }.joinToString(",")
-                writer.write("Date: $currentDateTime, Answers: [$results]\n")
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Toast.makeText(this, "Error writing to file", Toast.LENGTH_SHORT).show()
+    private fun navigateToDepotDetails() {
+        val selectedDepot = intent.getStringExtra("SELECTED_DEPOT")
+        val returnIntent = Intent(this, DepotDetailsActivity::class.java).apply {
+            putExtra("SELECTED_DEPOT", selectedDepot)
         }
+        startActivity(returnIntent)
+        finish()
     }
 }
