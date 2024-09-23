@@ -6,7 +6,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
@@ -73,9 +72,13 @@ class ManualEntryActivity : AppCompatActivity() {
                 val file = File(filesDir, "temporary_data.txt")
                 file.writeText("$fleetNumber;$vehicleType;$vehicleBrand;$reason") // Write all data
 
-                // Create an intent to start QrResultActivity and pass the fleet number
+                // Create an intent to start QrResultActivity and pass the fleet number and other data
                 val intent = Intent(this, QrResultActivity::class.java).apply {
                     putExtra("FLEET_NUMBER", fleetNumber) // Pass fleet number
+                    putExtra("VEHICLE_TYPE", vehicleType)
+                    putExtra("VEHICLE_BRAND", vehicleBrand)
+                    putExtra("REASON", reason)
+                    putExtra("IS_MANUAL_ENTRY", true) // Indicate that the entry is manual
                 }
                 startActivity(intent)
             } else {

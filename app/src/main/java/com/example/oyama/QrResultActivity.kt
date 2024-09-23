@@ -18,6 +18,10 @@ class QrResultActivity : AppCompatActivity() {
 
     private val buttonStates = mutableMapOf<Int, Boolean?>()
     private var qrData: String? = null
+    private var fleetNumber: String? = null
+    private var vehicleType: String? = null
+    private var vehicleBrand: String? = null
+    private var reason: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +30,21 @@ class QrResultActivity : AppCompatActivity() {
         supportActionBar?.hide()
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
-        // Get QR data from intent
+        // Get data from intent
         qrData = intent.getStringExtra("QR_DATA")
+        fleetNumber = intent.getStringExtra("FLEET_NUMBER")
+        vehicleType = intent.getStringExtra("VEHICLE_TYPE")
+        vehicleBrand = intent.getStringExtra("VEHICLE_BRAND")
+        reason = intent.getStringExtra("REASON")
+
         val textView = findViewById<TextView>(R.id.qrDataTextView)
 
-        // Concatenate the values for display
+        // Display concatenated data, including fleet number and other details
         val concatenatedData = """
+            Fleet Number: $fleetNumber
+            Vehicle Type: $vehicleType
+            Vehicle Brand: $vehicleBrand
+            Reason: $reason
             Answers: ${buttonStates.values.joinToString(", ") { if (it == true) "1" else "0" }}
             QR Data: ${qrData?.replace("\n", ",") ?: "No QR data available"}
         """.trimIndent()
@@ -92,11 +105,13 @@ class QrResultActivity : AppCompatActivity() {
 
     private fun sendDataToLambda() {
         val results = buttonStates.values.map { if (it == true) "1" else "0" }
-        val jsonData = JSONObject().put("answers", results) // Include answers in JSON
-
-        // Include formatted QR data in JSON for Lambda
-        qrData?.let { data ->
-            jsonData.put("qrData", data.replace("\n", ",")) // Replace newlines with commas for the API
+        val jsonData = JSONObject().apply {
+            put("answers", results) // Include answers in JSON
+            put("qrData", qrData?.replace("\n", ",")) // Include formatted QR data
+            put("fleetNumber", fleetNumber ?: "") // Include fleet number
+            put("vehicleType", vehicleType ?: "") // Include vehicle type
+            put("vehicleBrand", vehicleBrand ?: "") // Include vehicle brand
+            put("reason", reason ?: "") // Include reason
         }
 
         val url = URL("https://7g703ccxk8.execute-api.eu-north-1.amazonaws.com/prod/data")
