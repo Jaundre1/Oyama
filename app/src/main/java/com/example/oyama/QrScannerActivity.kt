@@ -71,9 +71,7 @@ class QrScannerActivity : ComponentActivity() {
 
     private inner class BarcodeAnalyzer : ImageAnalysis.Analyzer {
         private val scannerOptions = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(
-                Barcode.FORMAT_QR_CODE
-            )
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
         private val scanner = BarcodeScanning.getClient(scannerOptions)
 

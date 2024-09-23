@@ -11,16 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import org.json.JSONObject
-import java.io.File
-import java.io.FileWriter
-import java.io.IOException
-import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
 
 class QrResultActivity : AppCompatActivity() {
 
     private val buttonStates = mutableMapOf<Int, Boolean?>()
+    private var qrData: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +26,17 @@ class QrResultActivity : AppCompatActivity() {
         supportActionBar?.hide()
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
+        // Get QR data from intent
+        qrData = intent.getStringExtra("QR_DATA")
         val textView = findViewById<TextView>(R.id.qrDataTextView)
-        textView.text = "QR data goes here..." // This can be set with actual QR data
+
+        // Concatenate the values for display
+        val concatenatedData = """
+            Answers: ${buttonStates.values.joinToString(", ") { if (it == true) "1" else "0" }}
+            QR Data: ${qrData?.replace("\n", ",") ?: "No QR data available"}
+        """.trimIndent()
+
+        textView.text = concatenatedData
 
         // Setup buttons
         setupButtons()
@@ -86,7 +92,12 @@ class QrResultActivity : AppCompatActivity() {
 
     private fun sendDataToLambda() {
         val results = buttonStates.values.map { if (it == true) "1" else "0" }
-        val jsonData = JSONObject().put("answers", results) // No need to include the date
+        val jsonData = JSONObject().put("answers", results) // Include answers in JSON
+
+        // Include formatted QR data in JSON for Lambda
+        qrData?.let { data ->
+            jsonData.put("qrData", data.replace("\n", ",")) // Replace newlines with commas for the API
+        }
 
         val url = URL("https://7g703ccxk8.execute-api.eu-north-1.amazonaws.com/prod/data")
         Thread {
@@ -98,10 +109,9 @@ class QrResultActivity : AppCompatActivity() {
                 connection.connectTimeout = 10000
                 connection.readTimeout = 10000
 
-                val outputStreamWriter = OutputStreamWriter(connection.outputStream)
-                outputStreamWriter.write(jsonData.toString())
-                outputStreamWriter.flush()
-                outputStreamWriter.close()
+                connection.outputStream.use { outputStream ->
+                    outputStream.write(jsonData.toString().toByteArray())
+                }
 
                 val responseCode = connection.responseCode
                 runOnUiThread {
