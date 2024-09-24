@@ -1,6 +1,7 @@
 package com.example.oyama
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,7 @@ class QrResultActivity : AppCompatActivity() {
     private var vehicleType: String? = null
     private var vehicleBrand: String? = null
     private var reason: String? = null
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +31,9 @@ class QrResultActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
+
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("DepotPrefs", MODE_PRIVATE)
 
         // Get data from intent
         qrData = intent.getStringExtra("QR_DATA")
@@ -105,6 +110,11 @@ class QrResultActivity : AppCompatActivity() {
 
     private fun sendDataToLambda() {
         val results = buttonStates.values.map { if (it == true) "1" else "0" }
+
+        // Retrieve the selected depot from SharedPreferences
+        val selectedDepot = sharedPreferences.getString("SELECTED_DEPOT", "No Depot Selected")
+
+        // Create JSON data
         val jsonData = JSONObject().apply {
             put("answers", results) // Include answers in JSON
             put("qrData", qrData?.replace("\n", ",")) // Include formatted QR data
@@ -112,6 +122,7 @@ class QrResultActivity : AppCompatActivity() {
             put("vehicleType", vehicleType ?: "") // Include vehicle type
             put("vehicleBrand", vehicleBrand ?: "") // Include vehicle brand
             put("reason", reason ?: "") // Include reason
+            put("selectedDepot", selectedDepot) // Include selected depot
         }
 
         val url = URL("https://7g703ccxk8.execute-api.eu-north-1.amazonaws.com/prod/data")
