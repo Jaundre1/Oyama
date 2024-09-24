@@ -24,6 +24,7 @@ class QrResultActivity : AppCompatActivity() {
     private var vehicleType: String? = null
     private var vehicleBrand: String? = null
     private var reason: String? = null
+    private var registrationNumber: String? = null  // Declare registration number
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +43,7 @@ class QrResultActivity : AppCompatActivity() {
         vehicleType = intent.getStringExtra("VEHICLE_TYPE")
         vehicleBrand = intent.getStringExtra("VEHICLE_BRAND")
         reason = intent.getStringExtra("REASON")
+        registrationNumber = intent.getStringExtra("REGISTRATION_NUMBER")  // Retrieve registration number
 
         // Initialize TextView to display concatenated data
         val textView = findViewById<TextView>(R.id.qrDataTextView)
@@ -52,6 +54,7 @@ class QrResultActivity : AppCompatActivity() {
             Vehicle Type: $vehicleType
             Vehicle Brand: $vehicleBrand
             Reason: $reason
+            Registration Number: $registrationNumber
             Answers: ${buttonStates.values.joinToString(",") { if (it == true) "1" else "0" }}
             QR Data: ${qrData?.replace("\n", ",") ?: "No QR data available"}
         """.trimIndent()
@@ -129,15 +132,24 @@ class QrResultActivity : AppCompatActivity() {
         // Create JSON data
         val jsonData = JSONObject().apply {
             put("answers", JSONArray(results))  // Include answers as a JSON array
-            put("qrData", qrData?.replace("\n", ",") ?: "")  // Include formatted QR data
-            put("fleetNumber", fleetNumber ?: "")  // Include fleet number
-            put("vehicleType", vehicleType ?: "")  // Include vehicle type
-            put("vehicleBrand", vehicleBrand ?: "")  // Include vehicle brand
-            put("reason", reason ?: "")  // Include reason
             put("selectedDepot", selectedDepot)  // Include selected depot
+
+            // Check if data comes from manual entry or QR scanning
+            if (registrationNumber != null) { // Manual entry data
+                put("registrationNumber", registrationNumber ?: "")  // Include registration number
+                put("fleetNumber", fleetNumber ?: "")  // Include fleet number
+                put("vehicleType", vehicleType ?: "")  // Include vehicle type
+                put("reason", reason ?: "")  // Include reason
+                put("vehicleBrand", vehicleBrand ?: "")  // Include vehicle brand
+                put("qrData", "")  // No QR data
+            } else if (qrData != null) { // QR scanning data
+                put("qrData", qrData?.replace("\n", ",") ?: "")  // Include formatted QR data
+            }
         }
 
+        // Define the Lambda URL
         val url = URL("https://7g703ccxk8.execute-api.eu-north-1.amazonaws.com/prod/data")  // Lambda URL
+
         Thread {
             try {
                 val connection = url.openConnection() as HttpURLConnection
@@ -190,7 +202,7 @@ class QrResultActivity : AppCompatActivity() {
 
     // Navigate to DepotDetailsActivity
     private fun navigateToDepotDetails() {
-        val selectedDepot = intent.getStringExtra("SELECTED_DEPOT")
+        val selectedDepot = sharedPreferences.getString("SELECTED_DEPOT", "") // Get selected depot from SharedPreferences
         val returnIntent = Intent(this, DepotDetailsActivity::class.java).apply {
             putExtra("SELECTED_DEPOT", selectedDepot)
         }

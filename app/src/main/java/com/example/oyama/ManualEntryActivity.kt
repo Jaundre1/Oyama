@@ -52,25 +52,27 @@ class ManualEntryActivity : AppCompatActivity() {
             spinnerReason.adapter = adapter
         }
 
-        // Find the "Add" button and the EditText for fleet number
+        // Find the "Add" button, EditText for fleet number, and registration number
         val submitButton: Button = findViewById(R.id.submitButton)
         val fleetNumberEditText: EditText = findViewById(R.id.fleetNumberEditText)
+        val registrationNumberEditText: EditText = findViewById(R.id.registrationNumberEditText)
 
         // Set the click listener for the "Add" button
         submitButton.setOnClickListener {
-            // Get the fleet number entered by the user
+            // Get the fleet number and registration number entered by the user
             val fleetNumber = fleetNumberEditText.text.toString()
+            val registrationNumber = registrationNumberEditText.text.toString()
 
             // Get selected values from spinners
             val vehicleType = spinnerVehicleType.selectedItem.toString()
             val vehicleBrand = spinnerVehicleBrand.selectedItem.toString()
             val reason = spinnerReason.selectedItem.toString()
 
-            // Check if the fleet number is not empty
-            if (fleetNumber.isNotEmpty()) {
+            // Check if the fleet number and registration number are not empty
+            if (fleetNumber.isNotEmpty() && registrationNumber.isNotEmpty()) {
                 // Write data to file
                 val file = File(filesDir, "temporary_data.txt")
-                file.writeText("$fleetNumber;$vehicleType;$vehicleBrand;$reason") // Write all data
+                file.writeText("$fleetNumber;$vehicleType;$vehicleBrand;$reason;$registrationNumber") // Write all data
 
                 // Create an intent to start QrResultActivity and pass the fleet number and other data
                 val intent = Intent(this, QrResultActivity::class.java).apply {
@@ -78,12 +80,13 @@ class ManualEntryActivity : AppCompatActivity() {
                     putExtra("VEHICLE_TYPE", vehicleType)
                     putExtra("VEHICLE_BRAND", vehicleBrand)
                     putExtra("REASON", reason)
+                    putExtra("REGISTRATION_NUMBER", registrationNumber) // Pass registration number
                     putExtra("IS_MANUAL_ENTRY", true) // Indicate that the entry is manual
                 }
                 startActivity(intent)
             } else {
-                // Show a message if the fleet number is empty
-                Toast.makeText(this, "Please enter a fleet number", Toast.LENGTH_SHORT).show()
+                // Show a message if the fleet number or registration number is empty
+                Toast.makeText(this, "Please enter a fleet number and registration number", Toast.LENGTH_SHORT).show()
             }
         }
     }
