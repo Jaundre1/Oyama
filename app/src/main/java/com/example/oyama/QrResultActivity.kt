@@ -31,24 +31,23 @@ class QrResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qr_result)
 
-        supportActionBar?.hide()  // Hide the action bar
+        // Hide the action bar and set status bar color
+        supportActionBar?.hide()
         window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("DepotPrefs", MODE_PRIVATE)
 
-        // Get data from intent
+        // Get data from the intent
         qrData = intent.getStringExtra("QR_DATA")
         fleetNumber = intent.getStringExtra("FLEET_NUMBER")
         vehicleType = intent.getStringExtra("VEHICLE_TYPE")
         vehicleBrand = intent.getStringExtra("VEHICLE_BRAND")
         reason = intent.getStringExtra("REASON")
-        registrationNumber = intent.getStringExtra("REGISTRATION_NUMBER")  // Retrieve registration number
-
-        // Initialize TextView to display concatenated data
-        val textView = findViewById<TextView>(R.id.qrDataTextView)
+        registrationNumber = intent.getStringExtra("REGISTRATION_NUMBER")
 
         // Display concatenated data
+        val textView = findViewById<TextView>(R.id.qrDataTextView)
         val concatenatedData = """
             Fleet Number: $fleetNumber
             Vehicle Type: $vehicleType
@@ -58,22 +57,11 @@ class QrResultActivity : AppCompatActivity() {
             Answers: ${buttonStates.values.joinToString(",") { if (it == true) "1" else "0" }}
             QR Data: ${qrData?.replace("\n", ",") ?: "No QR data available"}
         """.trimIndent()
-
         textView.text = concatenatedData
 
-        // Setup buttons
+        // Setup buttons and submit logic
         setupButtons()
-
-        // Submit button
-        val submitButton: Button = findViewById(R.id.submitButton)
-        submitButton.setOnClickListener {
-            if (validateSelections()) {
-                sendDataToLambda()  // Send the results to the Lambda function
-                showSuccessDialog()  // Show success dialog after sending data
-            } else {
-                Toast.makeText(this, "Please answer all the questions!", Toast.LENGTH_SHORT).show()
-            }
-        }
+        setupSubmitButton()
     }
 
     // Setup button click listeners
@@ -88,7 +76,8 @@ class QrResultActivity : AppCompatActivity() {
 
         buttons.forEachIndexed { index, (yesButton, noButton) ->
             resetButtonColors(yesButton, noButton)
-            buttonStates[index] = null  // Use null to represent unanswered
+            buttonStates[index] = null  // Unanswered state
+
             yesButton.setOnClickListener { onButtonClicked(yesButton, noButton, index, true) }
             noButton.setOnClickListener { onButtonClicked(noButton, yesButton, index, false) }
         }
@@ -97,8 +86,8 @@ class QrResultActivity : AppCompatActivity() {
     // Handle button click event
     private fun onButtonClicked(selectedButton: Button, unselectedButton: Button, index: Int, isYes: Boolean) {
         setButtonColors(selectedButton, unselectedButton)
-        buttonStates[index] = isYes  // true for Yes, false for No
-        Log.d("ButtonClicked", "Button at index $index clicked. State updated to ${buttonStates[index]}.")
+        buttonStates[index] = isYes
+        Log.d("ButtonClicked", "Button at index $index clicked. State: ${buttonStates[index]}")
     }
 
     // Reset button colors to default
@@ -113,63 +102,71 @@ class QrResultActivity : AppCompatActivity() {
         unselectedButton.setBackgroundColor(Color.GRAY)
     }
 
+    // Setup submit button logic
+    private fun setupSubmitButton() {
+        val submitButton: Button = findViewById(R.id.submitButton)
+        submitButton.setOnClickListener {
+            if (validateSelections()) {
+                sendDataToLambda()  // Send data to Lambda
+                showSuccessDialog()  // Show success dialog
+            } else {
+                Toast.makeText(this, "Please answer all the questions!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     // Validate if all questions have been answered
     private fun validateSelections(): Boolean {
-        return buttonStates.values.all { it != null }  // Ensure all questions have been answered
+        return buttonStates.values.all { it != null }
     }
 
     // Send data to AWS Lambda function
     private fun sendDataToLambda() {
-        // Prepare answers as a List of integers (1s and 0s)
+        // Prepare answers as a List of 1s and 0s
         val results = buttonStates.values.map { if (it == true) 1 else 0 }
 
-        // Log results for debugging
         Log.d("SendDataToLambda", "Results: $results")
 
-        // Retrieve the selected depot from SharedPreferences
+        // Retrieve selected depot from SharedPreferences
         val selectedDepot = sharedPreferences.getString("SELECTED_DEPOT", "No Depot Selected") ?: ""
 
-        // Create JSON data
+        // Create JSON object for Lambda
         val jsonData = JSONObject().apply {
-            put("answers", JSONArray(results))  // Include answers as a JSON array
-            put("selectedDepot", selectedDepot)  // Include selected depot
+            put("answers", JSONArray(results))
+            put("selectedDepot", selectedDepot)
 
-            // Check if data comes from manual entry or QR scanning
-            if (registrationNumber != null) { // Manual entry data
-                put("registrationNumber", registrationNumber ?: "")  // Include registration number
-                put("fleetNumber", fleetNumber ?: "")  // Include fleet number
-                put("vehicleType", vehicleType ?: "")  // Include vehicle type
-                put("reason", reason ?: "")  // Include reason
-                put("vehicleBrand", vehicleBrand ?: "")  // Include vehicle brand
-                put("qrData", "")  // No QR data
+            if (registrationNumber != null) { // Manual entry
+                put("registrationNumber", registrationNumber ?: "")
+                put("fleetNumber", fleetNumber ?: "")
+                put("vehicleType", vehicleType ?: "")
+                put("reason", reason ?: "")
+                put("vehicleBrand", vehicleBrand ?: "")
+                put("qrData", "Manual") // Add "Manual" for manual entries
             } else if (qrData != null) { // QR scanning data
-                put("qrData", qrData?.replace("\n", ",") ?: "")  // Include formatted QR data
+                put("qrData", qrData?.replace("\n", ",") ?: "") // Remove "Scanned" from qrData
             }
         }
 
-        // Define the Lambda URL
-        val url = URL("https://7g703ccxk8.execute-api.eu-north-1.amazonaws.com/prod/data")  // Lambda URL
+        val url = URL("https://7g703ccxk8.execute-api.eu-north-1.amazonaws.com/prod/data")
 
+        // Send data to Lambda in a background thread
         Thread {
             try {
                 val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "POST"  // Use POST to send data
+                connection.requestMethod = "POST"
                 connection.doOutput = true
                 connection.setRequestProperty("Content-Type", "application/json")
                 connection.connectTimeout = 10000
                 connection.readTimeout = 10000
 
-                // Write JSON data to output stream
-                connection.outputStream.use { outputStream ->
-                    outputStream.write(jsonData.toString().toByteArray())
-                }
+                connection.outputStream.use { it.write(jsonData.toString().toByteArray()) }
 
                 val responseCode = connection.responseCode
                 runOnUiThread {
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         Toast.makeText(this, "Data sent successfully", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "Failed to send data, Response Code: $responseCode", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Failed to send data. Response Code: $responseCode", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
@@ -181,20 +178,20 @@ class QrResultActivity : AppCompatActivity() {
         }.start()
     }
 
+
+
     // Show success dialog after submission
     private fun showSuccessDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_success, null)
-
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(false)
             .create()
 
-        // Set up done button in dialog
         val doneButton: Button = dialogView.findViewById(R.id.doneButton)
         doneButton.setOnClickListener {
             dialog.dismiss()
-            navigateToDepotDetails()  // Navigate to depot details activity
+            navigateToDepotDetails()  // Navigate to depot details
         }
 
         dialog.show()
@@ -202,11 +199,11 @@ class QrResultActivity : AppCompatActivity() {
 
     // Navigate to DepotDetailsActivity
     private fun navigateToDepotDetails() {
-        val selectedDepot = sharedPreferences.getString("SELECTED_DEPOT", "") // Get selected depot from SharedPreferences
+        val selectedDepot = sharedPreferences.getString("SELECTED_DEPOT", "")
         val returnIntent = Intent(this, DepotDetailsActivity::class.java).apply {
             putExtra("SELECTED_DEPOT", selectedDepot)
         }
         startActivity(returnIntent)
-        finish()  // Finish current activity
+        finish()
     }
 }
