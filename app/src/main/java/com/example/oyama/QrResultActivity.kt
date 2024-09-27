@@ -24,7 +24,7 @@ class QrResultActivity : AppCompatActivity() {
     private var vehicleType: String? = null
     private var vehicleBrand: String? = null
     private var reason: String? = null
-    private var registrationNumber: String? = null  // Declare registration number
+    private var registrationNumber: String? = null
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,23 +46,31 @@ class QrResultActivity : AppCompatActivity() {
         reason = intent.getStringExtra("REASON")
         registrationNumber = intent.getStringExtra("REGISTRATION_NUMBER")
 
-        // Display concatenated data
-        val textView = findViewById<TextView>(R.id.qrDataTextView)
-        val concatenatedData = """
-            Fleet Number: $fleetNumber
-            Vehicle Type: $vehicleType
-            Vehicle Brand: $vehicleBrand
-            Reason: $reason
-            Registration Number: $registrationNumber
-            Answers: ${buttonStates.values.joinToString(",") { if (it == true) "1" else "0" }}
-            QR Data: ${qrData?.replace("\n", ",") ?: "No QR data available"}
-        """.trimIndent()
-        textView.text = concatenatedData
+        // Display data based on the source (QR or manual)
+        displayRelevantData()
 
         // Setup buttons and submit logic
         setupButtons()
         setupSubmitButton()
     }
+
+    // Function to display relevant data in TextView based on the source of data (QR or manual)
+    private fun displayRelevantData() {
+        val textView = findViewById<TextView>(R.id.qrDataTextView)
+
+        // If QR code data is available, display only the first item (either split by newline or comma)
+        if (qrData != null) {
+            // Split the QR data by either commas or newlines and display only the first item
+            val firstItem = qrData?.split(Regex("[,\n]"))?.firstOrNull() ?: "No QR data available"
+            textView.text = "Fleet Number: $firstItem"
+        }
+        // Otherwise, display the Fleet Number for manual entries
+        else if (fleetNumber != null) {
+            textView.text = "Fleet Number: $fleetNumber"
+        }
+    }
+
+
 
     // Setup button click listeners
     private fun setupButtons() {
@@ -122,7 +130,6 @@ class QrResultActivity : AppCompatActivity() {
 
     // Send data to AWS Lambda function
     private fun sendDataToLambda() {
-        // Prepare answers as a List of 1s and 0s
         val results = buttonStates.values.map { if (it == true) 1 else 0 }
 
         Log.d("SendDataToLambda", "Results: $results")
@@ -143,7 +150,7 @@ class QrResultActivity : AppCompatActivity() {
                 put("vehicleBrand", vehicleBrand ?: "")
                 put("qrData", "Manual") // Add "Manual" for manual entries
             } else if (qrData != null) { // QR scanning data
-                put("qrData", qrData?.replace("\n", ",") ?: "") // Remove "Scanned" from qrData
+                put("qrData", qrData?.replace("\n", ",") ?: "")
             }
         }
 
@@ -177,8 +184,6 @@ class QrResultActivity : AppCompatActivity() {
             }
         }.start()
     }
-
-
 
     // Show success dialog after submission
     private fun showSuccessDialog() {
