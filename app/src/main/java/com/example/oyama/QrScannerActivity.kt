@@ -17,11 +17,13 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 class QrScannerActivity : ComponentActivity() {
 
     private lateinit var previewView: PreviewView
     private lateinit var cameraExecutor: ExecutorService
+    private var isProcessingBarcode = AtomicBoolean(false)  // Flag to avoid multiple launches
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -76,17 +78,35 @@ class QrScannerActivity : ComponentActivity() {
         private val scanner = BarcodeScanning.getClient(scannerOptions)
 
         override fun analyze(image: ImageProxy) {
+            if (isProcessingBarcode.get()) {  // If already processing, skip further frames
+                image.close()
+                return
+            }
+
             val mediaImage = image.image
             if (mediaImage != null) {
                 val inputImage = InputImage.fromMediaImage(mediaImage, image.imageInfo.rotationDegrees)
                 scanner.process(inputImage)
                     .addOnSuccessListener { barcodes ->
-                        for (barcode in barcodes) {
-                            val rawValue = barcode.rawValue
-                            val intent = Intent(this@QrScannerActivity, QrResultActivity::class.java)
-                            intent.putExtra("QR_DATA", rawValue)
-                            startActivity(intent)
-                            finish() // Close this activity once the result is processed
+                        if (barcodes.isNotEmpty()) {
+                            // Mark that we're processing a barcode
+                            isProcessingBarcode.set(true)
+
+                            for (barcode in barcodes) {
+                                val rawValue = barcode.rawValue
+                                if (rawValue != null) {
+                                    // Start the QrResultActivity and pass the QR data
+                                    val intent = Intent(this@QrScannerActivity, QrResultActivity::class.java)
+                                    intent.putExtra("QR_DATA", rawValue)
+                                    startActivity(intent)
+
+                                    // Exit the current activity
+                                    finish()
+
+                                    // Break out after processing the first barcode
+                                    break
+                                }
+                            }
                         }
                     }
                     .addOnFailureListener {

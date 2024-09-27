@@ -60,17 +60,12 @@ class QrResultActivity : AppCompatActivity() {
 
         // If QR code data is available, display only the first item (either split by newline or comma)
         if (qrData != null) {
-            // Split the QR data by either commas or newlines and display only the first item
             val firstItem = qrData?.split(Regex("[,\n]"))?.firstOrNull() ?: "No QR data available"
             textView.text = "Fleet Number: $firstItem"
-        }
-        // Otherwise, display the Fleet Number for manual entries
-        else if (fleetNumber != null) {
+        } else if (fleetNumber != null) {
             textView.text = "Fleet Number: $fleetNumber"
         }
     }
-
-
 
     // Setup button click listeners
     private fun setupButtons() {
@@ -115,8 +110,8 @@ class QrResultActivity : AppCompatActivity() {
         val submitButton: Button = findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
             if (validateSelections()) {
+                submitButton.isEnabled = false // Disable the submit button
                 sendDataToLambda()  // Send data to Lambda
-                showSuccessDialog()  // Show success dialog
             } else {
                 Toast.makeText(this, "Please answer all the questions!", Toast.LENGTH_SHORT).show()
             }
@@ -148,7 +143,7 @@ class QrResultActivity : AppCompatActivity() {
                 put("vehicleType", vehicleType ?: "")
                 put("reason", reason ?: "")
                 put("vehicleBrand", vehicleBrand ?: "")
-                put("qrData", "Manual") // Add "Manual" for manual entries
+                put("qrData", "Manual") // Indicate manual entry
             } else if (qrData != null) { // QR scanning data
                 put("qrData", qrData?.replace("\n", ",") ?: "")
             }
@@ -172,6 +167,7 @@ class QrResultActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         Toast.makeText(this, "Data sent successfully", Toast.LENGTH_SHORT).show()
+                        showSuccessDialog()  // Show success dialog after successful data send
                     } else {
                         Toast.makeText(this, "Failed to send data. Response Code: $responseCode", Toast.LENGTH_SHORT).show()
                     }

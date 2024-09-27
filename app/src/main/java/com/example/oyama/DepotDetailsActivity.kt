@@ -31,7 +31,6 @@ class DepotDetailsActivity : AppCompatActivity() {
         val selectedDepotTextView: TextView = findViewById(R.id.selectedDepotTextView)
         val scanQRCodeButton: Button = findViewById(R.id.ScanQRCode)
         val manualEntryButton: Button = findViewById(R.id.ManualEntry)
-        val doneButton: Button = findViewById(R.id.doneButton)
         val backArrow: ImageView = findViewById(R.id.backArrow)
 
         // Retrieve the selected depot from SharedPreferences
@@ -57,24 +56,6 @@ class DepotDetailsActivity : AppCompatActivity() {
         backArrow.setOnClickListener {
             onBackPressed()
         }
-
-        // Set click listener for Done button to process, clear data, and reset the app state
-        doneButton.setOnClickListener {
-            clearDataHolder()
-            resetApp()
-        }
-    }
-
-    private fun clearDataHolder() {
-        dataHolder.clear()
-    }
-
-    private fun resetApp() {
-        sharedPreferences.edit().clear().apply()
-        // Optionally restart the activity or redirect to a different activity
-        val intent = Intent(this, DepotDetailsActivity::class.java)
-        startActivity(intent)
-        finish() // Finish the current activity to prevent stacking
     }
 
     fun getDataFromHolder(): String {
