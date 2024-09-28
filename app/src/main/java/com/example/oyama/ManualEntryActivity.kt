@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import java.io.File
 
 class ManualEntryActivity : AppCompatActivity() {
@@ -18,6 +19,9 @@ class ManualEntryActivity : AppCompatActivity() {
 
         // Hide the action bar
         supportActionBar?.hide()
+
+        // Set the status bar color
+        window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
         // Initialize and set up Vehicle Type Spinner
         val spinnerVehicleType: Spinner = findViewById(R.id.spinnerVehicleType)

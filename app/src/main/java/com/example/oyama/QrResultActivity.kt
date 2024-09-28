@@ -203,8 +203,9 @@ class QrResultActivity : AppCompatActivity() {
         val selectedDepot = sharedPreferences.getString("SELECTED_DEPOT", "")
         val returnIntent = Intent(this, DepotDetailsActivity::class.java).apply {
             putExtra("SELECTED_DEPOT", selectedDepot)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP // Clear stack and bring DepotDetailsActivity to the front
         }
         startActivity(returnIntent)
-        finish()
+        finish() // Finish the current activity
     }
 }

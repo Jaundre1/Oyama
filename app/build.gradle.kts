@@ -1,6 +1,10 @@
 plugins {
+    // Android and Kotlin plugins
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -79,4 +83,15 @@ dependencies {
 
     // Spinner dropdown functionality
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Import the Firebase BoM (Bill of Materials)
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
+
+    // Firebase Analytics (you can add more Firebase dependencies as needed)
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Add the dependencies for any other desired Firebase products
+    // For example, Firestore or Authentication if you need them
+    // implementation("com.google.firebase:firebase-firestore")
+    // implementation("com.google.firebase:firebase-auth")
 }

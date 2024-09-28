@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1022775801704",
+    "project_id": "oyama-df058",
+    "storage_bucket": "oyama-df058.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022775801704:android:1242d689e28dc3ad3e08dd",
+        "android_client_info": {
+          "package_name": "com.example.oyama"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-2AmU1lm1K09px5TMKgVufp9Mk2Ep8NI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
